@@ -19,14 +19,14 @@
 -->
 
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
-           id="cordova-plugin-inappbrowser"
-      version="1.4.1-dev">
+           id="cordova-plugin-inappbrowser-url-scheme"
+      version="1.0.0">
 
-    <name>InAppBrowser</name>
-    <description>Cordova InAppBrowser Plugin</description>
+    <name>InAppBrowserScheme</name>
+    <description>Cordova InAppBrowser Plugin with Scheme Handler</description>
     <license>Apache 2.0</license>
-    <keywords>cordova,in,app,browser,inappbrowser</keywords>
-    <repo>https://git-wip-us.apache.org/repos/asf/cordova-plugin-inappbrowser.git</repo>
+    <keywords>cordova,in,app,browser,inappbrowser,scheme</keywords>
+    <repo>https://github.com/iamport/cordova-plugin-inappbrowser.git</repo>
     <issue>https://issues.apache.org/jira/browse/CB/component/12320641</issue>
 
     <engines>
