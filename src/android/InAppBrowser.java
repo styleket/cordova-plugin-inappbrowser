@@ -38,6 +38,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.webkit.*;
 import android.widget.*;
 import kr.iamport.IamportUrlSchemeHandler;
+import org.apache.cordova.*;
 import org.json.JSONException;
 import org.json.JSONObject;
 
