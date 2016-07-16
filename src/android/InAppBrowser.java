@@ -954,7 +954,7 @@ public class InAppBrowser extends CordovaPlugin {
         public InAppBrowserUrlSchemeClient(CordovaWebView webView, EditText mEditText) {
             super(webView, mEditText);
 
-            String className = cordova.getActivity().getIntent().getStringExtra( "IamportURLSchemeHandler".toLowerCase(Locale.getDefault()) );
+            String className = preferences.getString( "IamportURLSchemeHandler", null );
             this.urlSchemeHandler = this.loadHandler(className);
         }
 
@@ -963,8 +963,11 @@ public class InAppBrowser extends CordovaPlugin {
                 ClassLoader loader = getClass().getClassLoader();
                 try {
                     Class<?> clazz = loader.loadClass(className);
-                    Constructor cons = clazz.getConstructor();
-                    cons.newInstance(cordova);
+                    Constructor cons = clazz.getConstructor(CordovaInterface.class);
+                    Object inst = cons.newInstance(cordova);
+                    if ( inst instanceof IamportUrlSchemeHandler ) {
+                        return (IamportUrlSchemeHandler) inst;
+                    }
                 } catch (ClassNotFoundException e) {
                     return null;
                 } catch (NoSuchMethodException e) {
@@ -981,8 +984,10 @@ public class InAppBrowser extends CordovaPlugin {
             return null;
         }
 
-        public boolean onOverrideUrlLoading(String url) {
-            if ( urlSchemeHandler != null ) {
+        public boolean shouldOverrideUrlLoading(WebView webView, String url) {
+            boolean handled = super.shouldOverrideUrlLoading(webView, url);
+
+            if ( !handled && urlSchemeHandler != null ) {
                 return urlSchemeHandler.handleUrl(url);
             }
 
