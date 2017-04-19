@@ -680,6 +680,14 @@ public class InAppBrowser extends CordovaPlugin {
                     CookieManager.getInstance().removeSessionCookie();
                 }
 
+                //cookie 허용
+                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+                    CookieManager cookieManager = CookieManager.getInstance();
+                    cookieManager.setAcceptCookie(true);
+                    cookieManager.setAcceptThirdPartyCookies(inAppWebView, true);
+                }
+
                 inAppWebView.loadUrl(url);
                 inAppWebView.setId(Integer.valueOf(6));
                 inAppWebView.getSettings().setLoadWithOverviewMode(true);
