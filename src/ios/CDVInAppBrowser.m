@@ -405,11 +405,18 @@
         }
     } 
     //if is an app store link, let the system handle it, otherwise it fails to load it
-    else if ([[ url scheme] isEqualToString:@"itms-appss"] || [[ url scheme] isEqualToString:@"itms-apps"]) {
-        [theWebView stopLoading];
+    //    else if ([[ url scheme] isEqualToString:@"itms-appss"] || [[ url scheme] isEqualToString:@"itms-apps"]) {
+    //        [theWebView stopLoading];
+    //        [self openInSystem:url];
+    //        return NO;
+    //    }
+    else if (![[url scheme] isEqualToString:@"file"] && ![[url scheme] isEqualToString:@"http"] &&
+             ![[url scheme] isEqualToString:@"https"] && ![[url scheme] isEqualToString:@"about"]) {
+        NSLog(@"INAPP: Scheme forwarding %@", [url absoluteString]);
         [self openInSystem:url];
         return NO;
     }
+
     else if ((self.callbackId != nil) && isTopLevelNavigation) {
         // Send a loadstart event for each top-level navigation (includes redirects).
         CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
