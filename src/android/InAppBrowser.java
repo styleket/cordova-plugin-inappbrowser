@@ -835,6 +835,17 @@ public class InAppBrowser extends CordovaPlugin {
                 } catch (android.content.ActivityNotFoundException e) {
                     LOG.e(LOG_TAG, "Error sending sms " + url + ":" + e.toString());
                 }
+            } else if (!url.startsWith(WebView.HTTP)&&!url.startsWith(WebView.HTTPS)
+                &&!url.startsWith(WebView.FILE)!url.startsWith("about")) {
+                LOG.d(LOG_TAG, "INAPP: Scheme forwarding " + url + ": " + url.toString());
+                try {
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setData(Uri.parse(url));
+                    cordova.getActivity().startActivity(intent);
+                    return true;
+                } catch (android.content.ActivityNotFoundException e) {
+                    LOG.e(LOG_TAG, "Error sending sms " + url + ":" + e.toString());
+                }
             }
             return false;
         }
