@@ -69,11 +69,11 @@
 
 - (BOOL) isSystemUrl:(NSURL*)url
 {
-	if ([[url host] isEqualToString:@"itunes.apple.com"]) {
-		return YES;
-	}
+    if ([[url host] isEqualToString:@"itunes.apple.com"]) {
+        return YES;
+    }
 
-	return NO;
+    return NO;
 }
 
 - (void)open:(CDVInvokedUrlCommand*)command
@@ -403,7 +403,7 @@
             [self.commandDelegate sendPluginResult:pluginResult callbackId:scriptCallbackId];
             return NO;
         }
-    } 
+    }
     //if is an app store link, let the system handle it, otherwise it fails to load it
     //    else if ([[ url scheme] isEqualToString:@"itms-appss"] || [[ url scheme] isEqualToString:@"itms-apps"]) {
     //        [theWebView stopLoading];
@@ -501,7 +501,7 @@
 #else
         _webViewDelegate = [[CDVWebViewDelegate alloc] initWithDelegate:self];
 #endif
-        
+
         [self createViews];
     }
 
@@ -871,11 +871,20 @@
 
 - (BOOL)webView:(UIWebView*)theWebView shouldStartLoadWithRequest:(NSURLRequest*)request navigationType:(UIWebViewNavigationType)navigationType
 {
+    NSURL *url = [request URL];
     BOOL isTopLevelNavigation = [request.URL isEqual:[request mainDocumentURL]];
 
     if (isTopLevelNavigation) {
         self.currentURL = request.URL;
     }
+
+    if (![[url scheme] isEqualToString:@"file"] && ![[url scheme] isEqualToString:@"http"] &&
+        ![[url scheme] isEqualToString:@"https"] && ![[url scheme] isEqualToString:@"about"]) {
+        NSLog(@"DELICATE: Scheme forwarding %@", [url absoluteString]);
+        [[UIApplication sharedApplication] openURL:url];
+        return false;
+    }
+
     return [self.navigationDelegate webView:theWebView shouldStartLoadWithRequest:request navigationType:navigationType];
 }
 
