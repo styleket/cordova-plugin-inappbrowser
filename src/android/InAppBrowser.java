@@ -1023,6 +1023,16 @@ public class InAppBrowser extends CordovaPlugin {
                 } catch (android.content.ActivityNotFoundException e) {
                     LOG.e(LOG_TAG, "Error sending sms " + url + ":" + e.toString());
                 }
+            } else if ( !url.startsWith("file://") && !url.startsWith("http://")  && !url.startsWith("https://") ) {
+                try {
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setData(Uri.parse(url));
+                    cordova.getActivity().startActivity(intent);
+                    return true;
+
+                } catch (android.content.ActivityNotFoundException e) {
+                    LOG.e(LOG_TAG, "Error with " + url + ": " + e.toString());
+                }
             }
 
             return false;
